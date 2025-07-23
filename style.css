@@ -1,0 +1,506 @@
+/* تصميم احترافي مستوحى من SAUDI FIBER XP مع تأثيرات LED متساقطة */
+
+/* استيراد خطوط Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&display=swap');
+
+/* متغيرات CSS للألوان الهادئة */
+:root {
+  --primary-dark: #1a1f2e;
+  --secondary-dark: #2a3142;
+  --accent-blue: #4a9eff;
+  --soft-blue: #6bb6ff;
+  --light-blue: #87ceeb;
+  --success-green: #4ade80;
+  --error-red: #f87171;
+  --text-primary: #e2e8f0;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  --glass-bg: rgba(42, 49, 66, 0.3);
+  --glass-border: rgba(74, 158, 255, 0.2);
+  --led-glow: #4a9eff;
+  --shadow-soft: 0 8px 32px rgba(0, 0, 0, 0.3);
+  --shadow-led: 0 0 20px rgba(74, 158, 255, 0.4);
+  --border-radius: 16px;
+  --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* إعادة تعيين الأساسيات */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* تصميم الجسم الرئيسي */
+body {
+  font-family: 'Cairo', Arial, sans-serif;
+  direction: rtl;
+  background: linear-gradient(135deg, var(--primary-dark) 0%, var(--secondary-dark) 100%);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  position: relative;
+  overflow-x: hidden;
+  /* إصلاح مشكلة التمرير */
+  overflow-y: auto;
+}
+
+/* خلفية متحركة مع نقاط LED */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: 
+    radial-gradient(circle at 20% 80%, rgba(74, 158, 255, 0.1) 2px, transparent 2px),
+    radial-gradient(circle at 80% 20%, rgba(74, 158, 255, 0.08) 1px, transparent 1px),
+    radial-gradient(circle at 40% 40%, rgba(135, 206, 235, 0.06) 1px, transparent 1px);
+  background-size: 120px 120px, 180px 180px, 100px 100px;
+  animation: ledFloat 20s ease-in-out infinite;
+  pointer-events: none;
+  z-index: -1;
+}
+
+@keyframes ledFloat {
+  0%, 100% { transform: translateY(0px) rotate(0deg); opacity: 0.8; }
+  33% { transform: translateY(-10px) rotate(1deg); opacity: 1; }
+  66% { transform: translateY(-5px) rotate(-1deg); opacity: 0.9; }
+}
+
+/* تأثير LED متساقط من السماء */
+.led-rain {
+  position: fixed;
+  width: 2px;
+  height: 20px;
+  background: linear-gradient(to bottom, transparent, var(--led-glow), transparent);
+  border-radius: 50%;
+  box-shadow: 0 0 10px var(--led-glow);
+  animation: ledFall linear infinite;
+  pointer-events: none;
+  z-index: 1;
+  top: -20px;
+}
+
+@keyframes ledFall {
+  0% {
+    transform: translateY(0);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100vh);
+    opacity: 0;
+  }
+}
+
+/* العنوان الرئيسي */
+.main-title {
+  text-align: center;
+  margin-bottom: 3rem;
+  position: relative;
+  z-index: 10;
+}
+
+.title-text {
+  font-size: 3rem;
+  font-weight: 800;
+  color: var(--accent-blue);
+  text-shadow: 0 0 30px rgba(74, 158, 255, 0.5);
+  letter-spacing: 3px;
+  margin-bottom: 1rem;
+  animation: titleGlow 3s ease-in-out infinite alternate;
+}
+
+@keyframes titleGlow {
+  0% { text-shadow: 0 0 20px rgba(74, 158, 255, 0.4); }
+  100% { text-shadow: 0 0 40px rgba(74, 158, 255, 0.8); }
+}
+
+.title-subtitle {
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  line-height: 1.8;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* الحاوي الرئيسي */
+.container {
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-soft);
+  padding: 3rem;
+  width: 100%;
+  max-width: 600px;
+  position: relative;
+  transition: var(--transition);
+  z-index: 10;
+}
+
+/* رأس الحاوي */
+.container-header {
+  text-align: center;
+  margin-bottom: 2.5rem;
+  position: relative;
+}
+
+.version-badge {
+  display: inline-block;
+  background: var(--accent-blue);
+  color: white;
+  padding: 0.3rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  box-shadow: var(--shadow-led);
+}
+
+.container-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--accent-blue);
+  margin-bottom: 1rem;
+  text-shadow: 0 0 20px rgba(74, 158, 255, 0.3);
+}
+
+.container-description {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+
+.container-credit {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  font-weight: 300;
+}
+
+/* مجموعة الإدخال */
+.input-group {
+  position: relative;
+  margin-bottom: 2rem;
+}
+
+.input-label {
+  display: block;
+  color: var(--text-primary);
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: 0.8rem;
+  text-align: right;
+}
+
+/* مربع الإدخال الرئيسي */
+#inputBox {
+  width: 100%;
+  padding: 1.2rem 4rem 1.2rem 1.5rem;
+  font-size: 1.1rem;
+  font-family: 'Cairo', Arial, sans-serif;
+  background: rgba(26, 31, 46, 0.6);
+  border: 2px solid var(--glass-border);
+  border-radius: 12px;
+  color: var(--text-primary);
+  transition: var(--transition);
+  outline: none;
+  direction: rtl;
+  backdrop-filter: blur(10px);
+}
+
+#inputBox:focus {
+  border-color: var(--accent-blue);
+  background: rgba(26, 31, 46, 0.8);
+  box-shadow: 0 0 0 4px rgba(74, 158, 255, 0.1), var(--shadow-led);
+  transform: translateY(-2px);
+}
+
+#inputBox::placeholder {
+  color: var(--text-muted);
+  font-weight: 400;
+}
+
+/* أيقونة الحالة مع تأثير LED */
+#statusIcon {
+  position: absolute;
+  left: 1.2rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.5rem;
+  transition: var(--transition);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  background: rgba(42, 49, 66, 0.8);
+  border: 2px solid var(--glass-border);
+  backdrop-filter: blur(10px);
+}
+
+/* حالات التحقق مع تأثيرات LED */
+.valid #statusIcon {
+  background: linear-gradient(135deg, var(--success-green), #22c55e);
+  color: white;
+  border-color: var(--success-green);
+  animation: successLED 0.8s ease-out;
+  box-shadow: 0 0 25px rgba(74, 222, 128, 0.6);
+}
+
+.invalid #statusIcon {
+  background: linear-gradient(135deg, var(--error-red), #ef4444);
+  color: white;
+  border-color: var(--error-red);
+  animation: errorLED 0.8s ease-out;
+  box-shadow: 0 0 25px rgba(248, 113, 113, 0.6);
+}
+
+/* رسوم متحركة LED للنجاح */
+@keyframes successLED {
+  0% { 
+    transform: translateY(-50%) scale(0.8); 
+    opacity: 0;
+    box-shadow: 0 0 0 rgba(74, 222, 128, 0);
+  }
+  50% { 
+    transform: translateY(-50%) scale(1.2); 
+    box-shadow: 0 0 40px rgba(74, 222, 128, 0.8);
+  }
+  100% { 
+    transform: translateY(-50%) scale(1); 
+    opacity: 1;
+    box-shadow: 0 0 25px rgba(74, 222, 128, 0.6);
+  }
+}
+
+/* رسوم متحركة LED للخطأ */
+@keyframes errorLED {
+  0%, 100% { 
+    transform: translateY(-50%) translateX(0);
+    box-shadow: 0 0 25px rgba(248, 113, 113, 0.6);
+  }
+  25% { 
+    transform: translateY(-50%) translateX(-8px);
+    box-shadow: 0 0 35px rgba(248, 113, 113, 0.8);
+  }
+  75% { 
+    transform: translateY(-50%) translateX(8px);
+    box-shadow: 0 0 35px rgba(248, 113, 113, 0.8);
+  }
+}
+
+/* النافذة المنبثقة */
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  opacity: 0;
+  visibility: hidden;
+  transition: var(--transition);
+}
+
+.popup-overlay.show {
+  opacity: 1;
+  visibility: visible;
+}
+
+.popup {
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--border-radius);
+  padding: 2.5rem;
+  max-width: 400px;
+  width: 90%;
+  text-align: center;
+  box-shadow: var(--shadow-soft);
+  transform: scale(0.8) translateY(30px);
+  transition: var(--transition);
+  position: relative;
+}
+
+.popup-overlay.show .popup {
+  transform: scale(1) translateY(0);
+}
+
+.popup-icon {
+  font-size: 3.5rem;
+  margin-bottom: 1.5rem;
+  animation: popupIconBounce 0.6s ease-out;
+}
+
+.popup-title {
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: var(--text-primary);
+}
+
+.popup-message {
+  font-size: 1rem;
+  color: var(--text-secondary);
+  margin-bottom: 2rem;
+  line-height: 1.6;
+}
+
+.popup-close {
+  background: linear-gradient(135deg, var(--accent-blue), var(--soft-blue));
+  color: white;
+  border: none;
+  padding: 0.8rem 2rem;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+  font-family: 'Cairo', Arial, sans-serif;
+  box-shadow: 0 4px 15px rgba(74, 158, 255, 0.3);
+}
+
+.popup-close:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(74, 158, 255, 0.5);
+}
+
+.popup.success .popup-icon {
+  color: var(--success-green);
+  text-shadow: 0 0 20px rgba(74, 222, 128, 0.5);
+}
+
+.popup.error .popup-icon {
+  color: var(--error-red);
+  text-shadow: 0 0 20px rgba(248, 113, 113, 0.5);
+}
+
+@keyframes popupIconBounce {
+  0% { transform: scale(0) rotate(180deg); opacity: 0; }
+  50% { transform: scale(1.2) rotate(0deg); }
+  100% { transform: scale(1) rotate(0deg); opacity: 1; }
+}
+
+/* أيقونة الشبكة */
+.network-icon {
+  position: absolute;
+  bottom: 2rem;
+  right: 2rem;
+  font-size: 3rem;
+  color: var(--accent-blue);
+  opacity: 0.3;
+  animation: networkPulse 3s ease-in-out infinite;
+}
+
+@keyframes networkPulse {
+  0%, 100% { opacity: 0.3; transform: scale(1); }
+  50% { opacity: 0.6; transform: scale(1.1); }
+}
+
+/* تأثيرات الهوفر */
+.container:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-soft), var(--shadow-led);
+}
+
+.input-group:hover #inputBox {
+  border-color: var(--soft-blue);
+  box-shadow: 0 4px 15px rgba(74, 158, 255, 0.2);
+}
+
+/* تصميم متجاوب */
+@media (max-width: 768px) {
+  body {
+    padding: 1rem;
+  }
+  
+  .title-text {
+    font-size: 2rem;
+  }
+  
+  .container {
+    padding: 2rem;
+    max-width: 100%;
+  }
+  
+  .container-title {
+    font-size: 1.5rem;
+  }
+  
+  #inputBox {
+    font-size: 1rem;
+    padding: 1rem 3.5rem 1rem 1.25rem;
+  }
+  
+  .popup {
+    padding: 2rem;
+  }
+  
+  .network-icon {
+    font-size: 2rem;
+    bottom: 1rem;
+    right: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .title-text {
+    font-size: 1.5rem;
+    letter-spacing: 1px;
+  }
+  
+  .container {
+    padding: 1.5rem;
+  }
+  
+  .popup {
+    padding: 1.5rem;
+  }
+}
+
+/* تحسينات الأداء */
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* تأثير التحميل */
+.loading {
+  position: relative;
+  overflow: hidden;
+}
+
+.loading::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(74, 158, 255, 0.3), transparent);
+  animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+  0% { left: -100%; }
+  100% { left: 100%; }
+}
+
